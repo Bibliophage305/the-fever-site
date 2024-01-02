@@ -1,0 +1,165 @@
+---
+title: "Repertoire"
+permalink: /repertoire
+last_modified_at: 2023-10-13T18:02:23Z
+---
+
+<div class="row text-light background-dark py-3">
+  <div class="col">
+    <div class="row text-center">
+      <h2>Repertoire</h2>
+    </div>
+    <div class="row py-3 text-center justify-content-center">
+      <div class="col-12 col-lg-8 col-md-10">
+        <h3>
+          Our song list is always being updated. Here's what we could play right
+          now, but it might be even more on the day of your event!
+        </h3>
+      </div>
+    </div>
+    <div class="row justify-content-center text-center">
+      <div id="loading" class="col-12 col-md-10">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Artist</th>
+              <th scope="col">Song</th>
+              <th scope="col">Genres</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in (1..30) %}
+            <tr>
+              <td scope="row">
+                <span class="placeholder col-{% cycle 9, 12, 6, 10, 11, 9, 12, 10, 8, 12 %}"></span>
+              </td>
+              <td>
+                <span class="placeholder col-{% cycle 9, 7, 10, 10, 7, 9, 8 %}"></span>
+              </td>
+              <td>
+                {% for j in (1..3) %}
+                <span class="placeholder col-{% cycle 2, 3, 3, 2, 2, 2, 2, 2, 4, 2, 4 %}"></span>
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div id="content" class="col-12 col-md-10 d-none">
+        <div class="row mb-3 justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4 text-dark">
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search"
+                  placeholder="Search..."
+                  autocomplete="off"
+                  onkeyup="applyFilter()"
+                />
+                <label for="search">Search...</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Artist</th>
+              <th scope="col">Song</th>
+              <th scope="col">Genres</th>
+            </tr>
+          </thead>
+          <tbody id="songlist"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const applyFilter = () => {
+    const searchTerms = document
+      .getElementById("search")
+      .value.toLowerCase()
+      .split(/\s/);
+    const table = document.querySelector("table tbody");
+    for (const row of table.children) {
+      const searchTermsRow = row
+        .getAttribute("search-terms")
+        .toLowerCase()
+        .split(/\s/);
+      if (
+        searchTerms.every((term) =>
+          searchTermsRow.some((rowTerm) => rowTerm.includes(term))
+        )
+      ) {
+        row.classList.remove("d-none");
+      } else {
+        row.classList.add("d-none");
+      }
+    }
+  };
+  const getSearchTerms = (song) => {
+    const terms = [];
+    terms.push(...song.artist.toLowerCase().split(/[^a-zA-Z\d]/));
+    terms.push(...song.title.toLowerCase().split(/[^a-zA-Z\d]/));
+    terms.push(...song.artist.toLowerCase().split(/\s/));
+    terms.push(...song.title.toLowerCase().split(/\s/));
+    return [...new Set(terms.filter(Boolean))].join(" ");
+  };
+  const insertRow = (song) => {
+    const row = document.createElement("tr");
+    row.setAttribute("search-terms", getSearchTerms(song));
+    const artist = document.createElement("td");
+    artist.innerText = song.artist;
+    artist.setAttribute("scope", "row");
+    row.appendChild(artist);
+    const songTitle = document.createElement("td");
+    songTitle.innerText = song.title;
+    row.appendChild(songTitle);
+    const genres = document.createElement("td");
+    for (const genre of song.categories) {
+      genreBadge = document.createElement("span");
+      genreBadge.classList.add(...["badge", "rounded-pill", "text-dark"]);
+      genreBadge.innerText = genre;
+      genres.appendChild(genreBadge);
+    }
+    row.appendChild(genres);
+    const tableBody = document.getElementById("songlist");
+    tableBody.appendChild(row);
+  };
+  const wait = (delay) => {
+    return new Promise((resolve) => setTimeout(resolve, delay));
+  }
+  const fetchRetry = (url, delay, tries, fetchOptions = {}) => {
+    const onError = (err) => {
+      triesLeft = tries - 1;
+      if (!triesLeft) {
+        throw err;
+      }
+      return wait(delay).then(() =>
+        fetchRetry(url, delay, triesLeft, fetchOptions)
+      );
+    }
+    return fetch(url, fetchOptions).catch(onError);
+  }
+
+  const songlist = fetchRetry(
+    "https://raw.githubusercontent.com/Bibliophage305/bandeoke-charts/exports/songManifest.json",
+    1000,
+    3
+  )
+    .then((response) => response.json())
+    .then((songs) => {
+      for (const song of songs) {
+        insertRow(song);
+      }
+    }).then(() => {
+      document.getElementById("loading").classList.add("d-none");
+      document.getElementById("content").classList.remove("d-none");
+    })
+</script>

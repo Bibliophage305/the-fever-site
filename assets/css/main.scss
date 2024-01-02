@@ -1,0 +1,119 @@
+---
+---
+
+:root {
+    --purple-primary: #940099;
+    --purple-secondary: #6b0073;
+    --gray: #b8b8b8;
+    --light: #bfd0ec;
+    --black: #1d1d1b;
+    --purple-super-light: #e0bcf4;
+    --showreel-width: min(1005px, 90vw);
+    --light-gradient: linear-gradient(-45deg, var(--gray), var(--light));
+}
+
+@font-face {
+    font-family: primary;
+    src: url("/assets/fonts/Heavitas.ttf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: secondary;
+    src: url("/assets/fonts/Gotham-Book.otf") format("opentype");
+    font-display: swap;
+}
+
+body {
+    font-family: secondary;
+    color: var(--black);
+    background-image: url("/assets/images/background.png");
+    min-height: 100vh;
+}
+
+h1 {
+    font-family: primary;
+    font-size: 4.5em !important;
+}
+
+h2 {
+    font-family: primary;
+    font-size: 3em !important;
+}
+
+h3 {
+    font-family: primary;
+    font-size: 2em !important;
+}
+
+p ul {
+    opacity: 0.85;
+}
+
+.stars {
+    font-size: 2em !important;
+}
+
+a:link {
+    color: inherit;
+    opacity: inherit;
+}
+
+.font-bebas {
+    font-family: primary;
+}
+
+.font-secondary {
+    font-family: secondary;
+}
+
+#navbar {
+    background: var(--purple-secondary);
+}
+
+#navbar-hamburger {
+    font-size: 2em !important;
+    color: white;
+}
+
+.nav-link {
+    font-family: primary;
+    font-size: 2em !important;
+}
+
+.cta-button {
+    font-size: 2em !important;
+    font-family: primary !important;
+    border: none;
+}
+
+#showreel {
+    width: var(--showreel-width);
+    height: calc(var(--showreel-width)*(565/1005));
+}
+
+#hero-logo {
+    max-height: 50vh;
+}
+
+.about-icon {
+    font-size: 5em !important;
+    color: var(--purple-primary);
+}
+
+.background-light {
+    background: var(--light-gradient);
+}
+
+.background-dark {
+    background-image: url("/assets/images/background.png");
+}
+
+#submit-button {
+    background: var(--purple-secondary);
+    border: var(--purple-primary);
+}
+
+.grecaptcha-badge { 
+    visibility: hidden;
+}

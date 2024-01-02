@@ -1,0 +1,35 @@
+<div class="row {% if include.dark %}text-light background-dark{% else %}text-dark background-light{% endif %} py-3">
+  <div class="col">
+    <div class="row mb-3">
+      <div class="col text-center">
+        <img id="hero-logo" src="/assets/images/slant-logo.png" class="rounded-circle bg-white" alt="The Fever logo">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <h2>{{ page.location }}'s best live karaoke band!</h2>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col text-center">
+        <a
+          role="button"
+          class="btn btn-primary btn-large text-light cta-button"
+          href="{% link pages/contact.html %}"
+        >
+          Enquire Now
+        </a>
+      </div>
+    </div>
+    <!-- <div class="row justify-content-center">
+      <div class="col-auto text-center">
+        <lite-youtube
+          id="showreel"
+          videoid="{{ site.hero_video_id }}"
+          posterquality="maxresdefault"
+          posterloading="eager"
+        ></lite-youtube>
+      </div>
+    </div> -->
+  </div>
+</div>
