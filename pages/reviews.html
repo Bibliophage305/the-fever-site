@@ -24,7 +24,9 @@ last_modified_at: 2023-10-19T22:19:11Z
           </span>
         </div>
         <div class="row">
-          <p class="fs-5">{{ review.text }}</p>
+          {% for paragraph in review.text %}
+          <p class="fs-5">{{ paragraph }}</p>
+          {% endfor %}
         </div>
         <div class="row">
           <p>{{ review.event }}</p>

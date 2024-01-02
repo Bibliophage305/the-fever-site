@@ -15,7 +15,9 @@
           </span>
         </div>
         <div class="row">
-          <p class="fs-5">{{ review.text }}</p>
+          {% for paragraph in review.text %}
+          <p class="fs-5">{{ paragraph }}</p>
+          {% endfor %}
         </div>
         <div class="row">
           <p>{{ review.event }}</p>
