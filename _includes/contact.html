@@ -23,8 +23,7 @@
       <div class="col-12 col-sm-10 col-md-8 col-lg-6 text-dark">
         <form
           id="contact-form"
-          class="kwes-form"
-          action="https://kwesforms.com/api/foreign/forms/{{ site.kwesform_key }}"
+          action="https://api.staticforms.xyz/submit"
           method="POST"
         >
           <input
@@ -62,7 +61,7 @@
           <div class="form-floating mb-3">
             <input
               type="date"
-              name="date"
+              name="$date"
               class="form-control"
               id="date-input"
               placeholder="date"
@@ -73,7 +72,7 @@
           <div class="form-floating mb-3">
             <input
               type="text"
-              name="venue"
+              name="$venue"
               class="form-control"
               id="venue-input"
               placeholder="venue"
@@ -112,4 +111,3 @@
     </div>
   </div>
 </div>
-<script src="https://kwesforms.com/v2/kwes-script.js" defer></script>
