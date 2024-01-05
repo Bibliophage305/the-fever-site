@@ -31,14 +31,20 @@ last_modified_at: 2023-10-13T18:02:23Z
             {% for i in (1..30) %}
             <tr>
               <td scope="row">
-                <span class="placeholder col-{% cycle 9, 12, 6, 10, 11, 9, 12, 10, 8, 12 %}"></span>
+                <span
+                  class="placeholder col-{% cycle 9, 12, 6, 10, 11, 9, 12, 10, 8, 12 %}"
+                ></span>
               </td>
               <td>
-                <span class="placeholder col-{% cycle 9, 7, 10, 10, 7, 9, 8 %}"></span>
+                <span
+                  class="placeholder col-{% cycle 9, 7, 10, 10, 7, 9, 8 %}"
+                ></span>
               </td>
               <td>
                 {% for j in (1..3) %}
-                <span class="placeholder col-{% cycle 2, 3, 3, 2, 2, 2, 2, 2, 4, 2, 4 %}"></span>
+                <span
+                  class="placeholder col-{% cycle 2, 3, 3, 2, 2, 2, 2, 2, 4, 2, 4 %}"
+                ></span>
                 {% endfor %}
               </td>
             </tr>
@@ -86,7 +92,7 @@ last_modified_at: 2023-10-13T18:02:23Z
       .getElementById("search")
       .value.toLowerCase()
       .split(/\s/);
-    const table = document.querySelector("table tbody");
+    const table = document.getElementById("songlist");
     for (const row of table.children) {
       const searchTermsRow = row
         .getAttribute("search-terms")
@@ -105,10 +111,16 @@ last_modified_at: 2023-10-13T18:02:23Z
   };
   const getSearchTerms = (song) => {
     const terms = [];
-    terms.push(...song.artist.toLowerCase().split(/[^a-zA-Z\d]/));
-    terms.push(...song.title.toLowerCase().split(/[^a-zA-Z\d]/));
-    terms.push(...song.artist.toLowerCase().split(/\s/));
-    terms.push(...song.title.toLowerCase().split(/\s/));
+    for (const raw of [song.artist, song.title]) {
+      terms.push(...raw.toLowerCase().split(/[^a-zA-Z\d]/));
+      terms.push(...raw.toLowerCase().split(/\s/));
+      terms.push(
+        ...raw
+          .toLowerCase()
+          .replace(/[^a-zA-Z\d\s]/g, "")
+          .split(/\s/)
+      );
+    }
     return [...new Set(terms.filter(Boolean))].join(" ");
   };
   const insertRow = (song) => {
@@ -134,7 +146,7 @@ last_modified_at: 2023-10-13T18:02:23Z
   };
   const wait = (delay) => {
     return new Promise((resolve) => setTimeout(resolve, delay));
-  }
+  };
   const fetchRetry = (url, delay, tries, fetchOptions = {}) => {
     const onError = (err) => {
       triesLeft = tries - 1;
@@ -144,9 +156,9 @@ last_modified_at: 2023-10-13T18:02:23Z
       return wait(delay).then(() =>
         fetchRetry(url, delay, triesLeft, fetchOptions)
       );
-    }
+    };
     return fetch(url, fetchOptions).catch(onError);
-  }
+  };
 
   const songlist = fetchRetry(
     "https://raw.githubusercontent.com/Bibliophage305/bandeoke-charts/exports/songManifest.json",
@@ -158,8 +170,9 @@ last_modified_at: 2023-10-13T18:02:23Z
       for (const song of songs) {
         insertRow(song);
       }
-    }).then(() => {
+    })
+    .then(() => {
       document.getElementById("loading").classList.add("d-none");
       document.getElementById("content").classList.remove("d-none");
-    })
+    });
 </script>
