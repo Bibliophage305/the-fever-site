@@ -66,11 +66,7 @@
       crossorigin
     />
     <!-- preload the image at /assets/images/background.png -->
-    <link
-      rel="preload"
-      href="/assets/images/background.png"
-      as="image"
-    />
+    <link rel="preload" href="/assets/images/background.png" as="image" />
     <link rel="canonical" href="{{ site.url }}{{ page.url }}" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -98,14 +94,13 @@
       href="https://i.ytimg.com/vi_webp/{{ site.hero_video_id }}/maxresdefault.webp"
       as="image"
     />
-    {% endif %} {% if page.use_recaptcha and jekyll.environment != "development"
+    {% endif %} {% if page.use_turnstile and jekyll.environment != "development"
     %}
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script>
-      function onSubmit(token) {
-        document.getElementById("contact-form").submit();
-      }
-    </script>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
     {% endif %}
   </head>
   <body>
