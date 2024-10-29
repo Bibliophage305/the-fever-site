@@ -28,6 +28,7 @@
           enctype="multipart/form-data"
         >
           <input type="hidden" name="redirectSuccess" value="{{ site.url }}{% link pages/submission-success.html %}">
+          <input type="hidden" name="redirectFailure" value="{{ site.url }}{% link pages/submission-failure.html %}">
           <div class="form-floating mb-3">
             <input
               type="text"
